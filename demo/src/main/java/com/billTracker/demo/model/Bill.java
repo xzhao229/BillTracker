@@ -11,6 +11,7 @@ public class Bill {
     Long id ;
 
     String category;
+
     String title;
 
     float value = 0;
