@@ -29,7 +29,7 @@ export default class SignUp extends Component {
         handleSubmit(event){
             event.preventDefault();
 
-            var signupInfo = {
+            let signupInfo = {
                 username: this.state.username,
                 email: this.state.email,
                 password:this.state.password

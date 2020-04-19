@@ -18,6 +18,7 @@ class AuthenticationService {
             sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, email)
             this.setupAxiosInterceptors(this.createBasicAuthToken(email, password))
     }
+
     setupAxiosInterceptors(token) {
         axios.interceptors.request.use(
             (config) => {
@@ -28,6 +29,8 @@ class AuthenticationService {
             }
         )
     }
+
+
     isUserLoggedIn() {
         let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
         if (user === null) return false

@@ -1,5 +1,7 @@
 package com.billTracker.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.*;
 import javax.persistence.*;
 
@@ -10,8 +12,9 @@ public class User {
     String email;
     String username;
     String password;
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Bill> bills = new ArrayList<>();
+    Set<Bill> bills = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
@@ -41,11 +44,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Bill> getBills() {
+    public Set<Bill> getBills() {
         return bills;
     }
 
-    public void setBills(List<Bill> bills) {
+    public void setBills(Set<Bill> bills) {
         this.bills = bills;
     }
 
