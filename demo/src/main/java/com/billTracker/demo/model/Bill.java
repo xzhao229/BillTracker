@@ -1,6 +1,8 @@
 package com.billTracker.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -15,9 +17,11 @@ public class Bill {
     String title;
 
     float value = 0;
-    Date dueData;
+    Date dueDate;
     String description;
-    @ManyToOne()
+    @JsonBackReference
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="user_id")
     User user;
 
 
@@ -53,12 +57,12 @@ public class Bill {
         this.value = value;
     }
 
-    public Date getDueData() {
-        return dueData;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setDueData(Date dueData) {
-        this.dueData = dueData;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getDescription() {

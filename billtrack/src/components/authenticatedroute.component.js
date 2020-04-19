@@ -4,8 +4,7 @@ import AuthenticationService from '../AuthenticationService';
 class AuthenticatedRoute extends Component {
     render() {
         if (AuthenticationService.isUserLoggedIn()) {
-            console.log(this.props)
-            return <Route {...this.props.path} />
+            return <Route path={this.props.path} component={this.props.component} />
         } else {
             return <Redirect to="/sign-in" />
         }
