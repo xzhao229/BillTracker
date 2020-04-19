@@ -49,11 +49,13 @@ export default class Login extends Component {
                         var message = error.response.data;
                         if(message == "Wrong password") {
                             this.setState({
-                                loginStatus:-2
+                                loginStatus:-2,
+                                password:""
                                 });
                         } else if (message == "User not found") {
                             this.setState({
-                                loginStatus:-3
+                                loginStatus:-3,
+                                password:""
                                 });
                         } else {
                             this.setState({
@@ -87,12 +89,12 @@ export default class Login extends Component {
 
                         <div className="form-group">
                             <label>Email address</label>
-                            <input type="email" className="form-control" placeholder="Enter email" name="email" onChange={this.handleChange} />
+                            <input type="email" className="form-control" placeholder="Enter email" name="email" value={this.state.email} onChange={this.handleChange} />
                         </div>
 
                         <div className="form-group">
                             <label>Password</label>
-                            <input type="password" className="form-control" placeholder="Enter password" name="password" onChange={this.handleChange}/>
+                            <input type="password" className="form-control" placeholder="Enter password" name="password" value={this.state.password} onChange={this.handleChange}/>
                         </div>
 
                         <div className="form-group">
