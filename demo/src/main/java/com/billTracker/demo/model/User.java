@@ -14,7 +14,7 @@ public class User {
     String password;
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    Set<Bill> bills = new HashSet<>();
+    List<Bill> bills = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
@@ -44,11 +44,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Bill> getBills() {
+    public List<Bill> getBills() {
         return bills;
     }
 
-    public void setBills(Set<Bill> bills) {
+    public void setBills(List<Bill> bills) {
         this.bills = bills;
     }
 

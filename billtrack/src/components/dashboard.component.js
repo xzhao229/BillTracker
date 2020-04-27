@@ -1,21 +1,135 @@
-import React, {useState, useEffect, Component} from "react";
+import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../AuthenticationService";
+import Layout from "./layout.component";
 import axios from "axios";
+import MaterialTable from 'material-table';
+import addBills from '../billscrud/addBills';
+import deleteBills from '../billscrud/deleteBills';
+import updateBills from '../billscrud/updateBills'
+import TextField from '@material-ui/core/TextField';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 
 
 class Dashboard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            bills:"",
-            error: ""
+            bills: [],
+            error: "",
+            column: [
+                {
+                    field: 'name',
+                    title: 'Name',
+                    editComponent: props => (
+                        <TextField
+                                {...props}
+                                placeholder="Name"
+                                value={props.value === undefined ? '' : props.value}
+                                onChange={event => props.onChange(event.target.value)}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 13,
+                                    }
+                                }}
+                                error={props.value === "" ? true :false}
+                                helperText="*Required"
+                        />
+                    )
+                },
+
+                {
+                    field: 'category',
+                    title: 'Category',
+                    editComponent: props => (
+                        <TextField
+                            {...props}
+                            placeholder="amount"
+                            value={props.value === undefined ? '' : props.value}
+                            onChange={event => props.onChange(event.target.value)}
+                            inputProps={{
+                              style: {
+                                fontSize: 13,
+                                textAlign: "right"
+                              }
+                            }}
+                            error={props.value === "" ? true :false}
+                            helperText="*Required"
+                        />
+                    )
+                },
+
+                {
+                    field: 'value',
+                    title: 'Value',
+                    type:"currency",
+                    editComponent: props => (
+                        <TextField
+                                {...props}
+                                placeholder="amount"
+                                value={props.value === undefined ? '' : props.value}
+                                onChange={event => props.onChange(event.target.value)}
+                                inputProps={{
+                                  style: {
+                                    fontSize: 13,
+                                  }
+                                }}
+                                error={props.value === "" ? true :false}
+                                helperText="*Required"
+                        />
+                    )
+                },
+
+                {
+                    field: 'dueDate',
+                    title: 'Due Date',
+                    type: 'date',
+                    editComponent: props => (
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}
+                            locale={props.dateTimePickerLocalization}>
+                            <DatePicker
+                                {...props}
+                                format="MM.dd.yyyy"
+                                value={props.value === undefined ? null : props.value}
+                                onChange={props.onChange}
+                                clearable
+                                InputProps={{
+                                    style: {
+                                        fontSize: 13,
+                                    }
+                                }}
+                                error={props.value === null ? true :false}
+                                helperText="*Required"
+                            />
+                        </MuiPickersUtilsProvider>
+                    )
+                },
+                {
+                    field: 'description',
+                    title: 'Description',
+                },
+
+
+
+                     ]
         };
+        this.getBills = this.getBills.bind(this);
     }
 
     componentDidMount() {
         this.getBills()
+    }
+
+    validate(data){
+        if (!("name" in data) || data.name === ""
+        || !("value" in data) || data.value === ""
+        || !("category" in data)|| data.category === ""
+        || !("dueDate" in data) || data.dueDate === null || data.dueDate === ""){
+            return false;
+        }
+        return true;
     }
 
     getBills() {
@@ -27,27 +141,77 @@ class Dashboard extends Component {
         axios.get("http://localhost:8080/demo/bills", userInfo)
             .then ((response) => {
                 this.setState({bills: response.data});
-                console.log(this.state.bills)
-
+                return
             })
             .catch(err =>{this.setState({error: err.response.data});
                 console.log(err.response.data);
             })
-        return
     }
 
     render() {
         return (
             <div>
-                <div className="card mb-5">
-                    <h3 className="card-header">User Information</h3>
-                    <ul className="list-group">
-                        <li className="list-group-item">username</li>
-                        <li className="list-group-item">email</li>
-                    </ul>
-                </div>
+                <Layout title = "Hello" description="Here is the bill you will need to pay in the future.">
+                                ...
+                </Layout>
+                    <MaterialTable
+                          title="Current Bills"
+                          columns={this.state.column}
+                          data={query => new Promise((resolve, reject) => {
+                               let userInfo = {
+                                   params: {
+                                       email: sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+                                   }
+                               }
+                               axios.get("http://localhost:8080/demo/bills", userInfo)
+                                   .then ((response) => {
+                                        resolve({
+                                        data: response.data.slice(query.page * query.pageSize, (query.page + 1) * query.pageSize ),
+                                        page: query.page,
+                                        totalCount: response.data.length
+                                        })
+                                   })
+                             })
+                          }
+                          editable={{
+                            onRowAdd: (newData) =>
+                              new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    if(this.validate(newData)){
+                                         newData.dueDate = newData.dueDate.toLocaleDateString()
+                                         addBills(newData)
+                                         resolve();
+                                    }
+                                    else reject();
+
+                                }, 600);
+                              }),
+                            onRowUpdate: (newData, oldData) =>
+                              new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                  if (oldData) {
+                                      if(this.validate(newData)){
+                                          updateBills(newData)
+                                          resolve();
+                                      }
+                                      else reject()
+
+                                  }
+
+                                }, 600);
+                              }),
+                            onRowDelete: (oldData) =>
+                              new Promise((resolve) => {
+                                setTimeout(() => {
+                                  deleteBills(oldData)
+                                  resolve();
+                                }, 600);
+                              }),
+                          }}
+                        />
+
                 <div>
-                    <Link type="button" className="btn btn-primary btn-lg" to="/addBills">Add Bills</Link>
+                <Link type="button" className="btn btn-primary btn-lg" to="/addBills">Add Bills</Link>
                 </div>
 
             </div>
@@ -59,3 +223,4 @@ class Dashboard extends Component {
 
 
 export default Dashboard;
+                   // <StickyHeadTable rows={this.state.bills}/>

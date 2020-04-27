@@ -47,12 +47,12 @@ export default class Login extends Component {
                .catch(error=>{
                         console.log(error.response.data);
                         var message = error.response.data;
-                        if(message == "Wrong password") {
+                        if(message === "Wrong password") {
                             this.setState({
                                 loginStatus:-2,
                                 password:""
                                 });
-                        } else if (message == "User not found") {
+                        } else if (message === "User not found") {
                             this.setState({
                                 loginStatus:-3,
                                 password:""
@@ -65,14 +65,13 @@ export default class Login extends Component {
                })
     }
     render() {
-        if(this.state.loginStatus == 1){
+        if(this.state.loginStatus === 1){
             alert("Successfully logged in!")
             return <Redirect to='/dashboard' />
         };
         return (
             <div className="auth-wrapper">
                 <div className="auth-inner">
-
                     <form>
                         <h3>Sign In</h3>
                         <div className='alert alert-danger' style={{display:this.state.error === -1 ? '' : 'none'}}>
@@ -106,7 +105,7 @@ export default class Login extends Component {
 
                         <button type="submit" className="btn btn-primary btn-block" onClick={this.handleSubmit}>Submit</button>
                         <p className="forgot-password text-right">
-                            Forgot <a href="#">password?</a>
+                            Forgot <a href="/signup">password?</a>
                         </p>
                     </form>
                 </div>

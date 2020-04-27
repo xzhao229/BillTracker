@@ -14,13 +14,13 @@ public class Bill {
 
     String category;
 
-    String title;
+    String name;
 
     float value = 0;
     Date dueDate;
     String description;
     @JsonBackReference
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="user_id")
     User user;
 
@@ -33,12 +33,12 @@ public class Bill {
         this.category = category;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getId() {
