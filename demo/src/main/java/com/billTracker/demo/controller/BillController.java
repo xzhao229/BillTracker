@@ -32,12 +32,14 @@ public class BillController {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         Bill b = new Bill();
-        b.setTitle(billInfo.get("title"));
+        System.out.println(billInfo.get("name"));
+        System.out.println(billInfo.get("dueDate"));
+        b.setName(billInfo.get("name"));
         b.setCategory(billInfo.get("category"));
         b.setDescription(billInfo.get("description"));
         Date date= null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(billInfo.get("dueDate"));
+            date = new SimpleDateFormat("MM/dd/yyyy").parse(billInfo.get("dueDate"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -49,12 +51,41 @@ public class BillController {
         billRepository.save(b);
         return ResponseEntity.ok().build();
     }
+    @DeleteMapping(path ="/deleteBills")
+    public ResponseEntity<String> deleteBills(@RequestParam("id") String id) {
+        Bill b = billRepository.findById(Long.parseLong(id)).get();
+        billRepository.delete(b);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping(path="/bills")
-    public Set<Bill> getBills(@RequestParam("email") String email) {
+    public List<Bill> getBills(@RequestParam("email") String email) {
 
         User u = userRepository.findByEmail(email);
         System.out.println(u.getBills().size());
         return u.getBills();
+    }
+
+    @PutMapping(path="/updateBills")
+    public ResponseEntity<String> updateBills(@RequestBody Map<String, String> billInfo)
+    {
+        Bill b = billRepository.findById(Long.parseLong(billInfo.get("id"))).get();
+        b.setCategory(billInfo.get("category"));
+        Date date= null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(billInfo.get("dueDate"));
+            if (date == null) {
+                date = new SimpleDateFormat("MM/dd/yyyy").parse(billInfo.get("dueDate"));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        b.setDueDate(date);
+        float billValue = Float.parseFloat(billInfo.get("value"));
+        b.setValue(billValue);
+        b.setDescription(billInfo.get("description"));
+        b.setName(billInfo.get("name"));
+        billRepository.save(b);
+        return ResponseEntity.ok().build();
     }
 }

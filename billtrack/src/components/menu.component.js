@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {withRouter, Link} from "react-router-dom";
-import Layout from "./layout.component";
+
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import AuthenticationService from "../AuthenticationService";

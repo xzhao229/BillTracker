@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Layout from "./layout.component";
-import axios from "axios";
+
 
 
 const Home = () => (

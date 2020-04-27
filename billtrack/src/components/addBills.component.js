@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
 import axios from "axios";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../AuthenticationService";
 
@@ -7,7 +6,7 @@ class AddBills extends Component {
     constructor(props){
         super(props);
         this.state = {
-            title:"",
+            name:"",
             category: "",
             value:"",
             description:"",
@@ -34,7 +33,7 @@ class AddBills extends Component {
 
         let billInfo = {
             email:sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME),
-            title: this.state.title,
+            name: this.state.name,
             category: this.state.category,
             value:this.state.value,
             description:this.state.description,
@@ -66,14 +65,14 @@ class AddBills extends Component {
                         }
 
                         <div className="form-group">
-                            <label>Title</label>
-                            <input type="text" className="form-control" name="title" onChange={this.handleChange} placeholder="Bill Title" />
+                            <label>Name</label>
+                            <input type="text" className="form-control" name="name" onChange={this.handleChange} placeholder="Bill Name" />
                         </div>
 
 
                         <div className="form-group">
                             <label>Category</label>
-                            <input type="text" className="form-control" name="category" onChange={this.handleChange} placeholder="Bill Category" />
+                            <input type="text" className="form-control" name="category" onChange={this.handleChange} placeholder="Ex: Utility" />
 
                         </div>
 
