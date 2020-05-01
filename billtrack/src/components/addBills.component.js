@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../AuthenticationService";
+import {USER_NAME_SESSION_ATTRIBUTE_NAME, BACKEND_ENDPOINT} from "../AuthenticationService";
 
 class AddBills extends Component {
     constructor(props){
@@ -42,7 +42,7 @@ class AddBills extends Component {
 
         console.log(billInfo)
 
-        axios.post("http://localhost:8080/demo/addBills", billInfo)
+        axios.post(BACKEND_ENDPOINT + "/demo/addBills", billInfo)
             .then((response) => {
                 this.setState({billAdded: true});
             })

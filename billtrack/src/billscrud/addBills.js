@@ -1,5 +1,5 @@
 import axios from "axios";
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../AuthenticationService";
+import {USER_NAME_SESSION_ATTRIBUTE_NAME, BACKEND_ENDPOINT} from "../AuthenticationService";
 
 export default function addBills(data) {
 
@@ -12,7 +12,7 @@ export default function addBills(data) {
         dueDate:data.dueDate,
     }
 
-    axios.post("http://localhost:8080/demo/addBills", billInfo)
+    axios.post(BACKEND_ENDPOINT + "/demo/addBills", billInfo)
         .then((response) => {
         })
         .catch(err =>{

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BACKEND_ENDPOINT} from "../AuthenticationService";
 
 
 export default function updateBills(data) {
@@ -12,7 +13,7 @@ export default function updateBills(data) {
         dueDate:data.dueDate,
     }
 
-    axios.put("http://localhost:8080/demo/updateBills", billInfo)
+    axios.put( BACKEND_ENDPOINT + "/demo/updateBills", billInfo)
         .then((response) => {
         })
         .catch(err =>{

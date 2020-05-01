@@ -4,9 +4,11 @@
   box-sizing: border-box;
 }
 body {
-  background: url("https://images5.alphacoders.com/335/335664.jpg") !important;
-  min-height: 100vh;
-  display: flex;
+  background-image: url(
+  "https://ctl.s6img.com/society6/img/ZbBxEfSHjfA45FBip80pHvevcd8/w_700/shams/swatch/~artwork,fw_6107,fh_3504,fx_-33,fy_-69,iw_6170,ih_3639/s6-original-art-uploads/society6/uploads/misc/b0e501ffc38a44a5afd0180d1d50246e/~~/color-gradient-background-fading-sunset-sky-colors-shams.jpg") !important;
+
+  background-size: cover;
+  background-repeat: no-repeat;
   font-weight: 400;
   font-family: 'Fira Sans', sans-serif;
 }
