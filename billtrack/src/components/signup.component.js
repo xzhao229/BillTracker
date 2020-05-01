@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import {Link, Redirect} from "react-router-dom";
 import axios from "axios";
+import {BACKEND_ENDPOINT} from "../AuthenticationService";
+
 
 export default class SignUp extends Component {
 
@@ -35,7 +37,7 @@ export default class SignUp extends Component {
                 password:this.state.password
             }
 
-            axios.post("http://localhost:8080/demo/signup", signupInfo)
+            axios.post(BACKEND_ENDPOINT + "/demo/signup", signupInfo)
                   .then((response) => {
                     this.setState({signedUp: true});
                     })

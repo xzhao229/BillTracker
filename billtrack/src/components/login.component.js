@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
-import AuthenticationService from "../AuthenticationService";
+import AuthenticationService, {BACKEND_ENDPOINT} from "../AuthenticationService";
 
 
 export default class Login extends Component {
@@ -30,7 +30,7 @@ export default class Login extends Component {
     handleSubmit(event){
         event.preventDefault();
 
-        axios.post("http://localhost:8080/demo/signin", this.state)
+        axios.post(BACKEND_ENDPOINT + "/demo/signin", this.state)
                .then(response=>{
                         console.log("ok?")
                         console.log(response)

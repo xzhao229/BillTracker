@@ -1,5 +1,5 @@
 import axios from "axios";
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../AuthenticationService";
+import {USER_NAME_SESSION_ATTRIBUTE_NAME, BACKEND_ENDPOINT} from "../AuthenticationService";
 
 export default function deleteBills(data) {
     const billInfo = {
@@ -12,7 +12,7 @@ export default function deleteBills(data) {
         id:data.id
     }
 
-    axios.delete("http://localhost:8080/demo/deleteBills", {params:billInfo})
+    axios.delete(BACKEND_ENDPOINT + "/demo/deleteBills", {params:billInfo})
         .then((response) => {
         })
         .catch(err =>{

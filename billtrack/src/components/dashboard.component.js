@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import { Link } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../AuthenticationService";
+import {USER_NAME_SESSION_ATTRIBUTE_NAME, BACKEND_ENDPOINT} from "../AuthenticationService";
 import Layout from "./layout.component";
 import axios from "axios";
 import MaterialTable from 'material-table';
@@ -10,6 +9,7 @@ import deleteBills from '../billscrud/deleteBills';
 import updateBills from '../billscrud/updateBills'
 import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
+import StickyFooter from "./stickyfooter.component";
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 
 
@@ -19,6 +19,7 @@ class Dashboard extends Component {
         this.state = {
             bills: [],
             error: "",
+            date: (new Date().getMonth()+1)+'-'+new Date().getDate(),
             column: [
                 {
                     field: 'name',
@@ -138,7 +139,7 @@ class Dashboard extends Component {
                 email: sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
             }
         }
-        axios.get("http://localhost:8080/demo/bills", userInfo)
+        axios.get(BACKEND_ENDPOINT + "/demo/bills", userInfo)
             .then ((response) => {
                 this.setState({bills: response.data});
                 return
@@ -151,11 +152,10 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Layout title = "Hello" description="Here is the bill you will need to pay in the future.">
-                                ...
+                <Layout title = "Hello" date = {this.state.date} description="Here is the bill you need to pay in the future.">
                 </Layout>
                     <MaterialTable
-                          title="Current Bills"
+                          title="Current Bill"
                           columns={this.state.column}
                           data={query => new Promise((resolve, reject) => {
                                let userInfo = {
@@ -163,7 +163,7 @@ class Dashboard extends Component {
                                        email: sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
                                    }
                                }
-                               axios.get("http://localhost:8080/demo/bills", userInfo)
+                               axios.get(BACKEND_ENDPOINT + "/demo/bills", userInfo)
                                    .then ((response) => {
                                         resolve({
                                         data: response.data.slice(query.page * query.pageSize, (query.page + 1) * query.pageSize ),
@@ -209,18 +209,10 @@ class Dashboard extends Component {
                               }),
                           }}
                         />
-
-                <div>
-                <Link type="button" className="btn btn-primary btn-lg" to="/addBills">Add Bills</Link>
-                </div>
-
+            <StickyFooter/>
             </div>
+
         )
     }
 }
-
-
-
-
 export default Dashboard;
-                   // <StickyHeadTable rows={this.state.bills}/>
